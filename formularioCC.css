@@ -1,0 +1,92 @@
+form {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px solid #2196F3;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+}
+
+fieldset {
+  border: none;
+}
+
+legend {
+  font-size: 22px;
+  font-weight: bold;
+  color: #1565C0;
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+input[type="text"],
+input[type="file"],
+textarea,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  margin-right: 8px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button[type="submit"] {
+  background-color: #2196F3;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background-color: #1976D2;
+}
+
+button[type="reset"] {
+  background-color: #f44336;
+  color: white;
+  margin-left: 10px;
+}
+
+button[type="reset"]:hover {
+  background-color: #e53935;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f4f8fc;
+}
+
+h1 {
+  color: #1565C0;
+}
+
+.resultado {
+  background: #fff;
+  padding: 15px;
+  border: 2px solid #2196F3;
+  border-radius: 8px;
+  max-width: 600px;
+}
