@@ -1,6 +1,6 @@
 <?php
 // Incluimos la conexión
-require 'config.php';
+require 'configDB.php';
 
 // Crear la base de datos si no existe
 /* $conexion->query("CREATE DATABASE IF NOT EXISTS $dbname"); */
