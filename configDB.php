@@ -6,6 +6,6 @@ $password = "";
 $dbname = "formulario_web";
 
 // Crear conexión
-$conexion = new mysqli($servername, $username, $password);
+$conexion = new mysqli($servername, $username, $password, $dbname);
 
 ?>
