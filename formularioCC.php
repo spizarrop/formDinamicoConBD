@@ -1,6 +1,6 @@
 <?php
 // Conexión
-require_once 'config.php';
+require 'config.php';
 require 'cargarDatos.php';
 
 // Acciones
@@ -8,16 +8,18 @@ $acciones = checkboxAcciones();
 
 // Consulta a la tabla regiones
 $sql = "SELECT codigo, nombre FROM regiones";
-$result = $conexion->query($sql);
+$resultado = $conexion->query($sql);
 
-// Creamos un array asociativo
+// Creamos un array
 $region = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $region[$row['codigo']] = $row['nombre'];
-    }
+if ($resultado->num_rows > 0) {
+  while ($fila = $resultado->fetch_assoc()) {
+    $region[$fila['codigo']] = $fila['nombre'];
+  }
 }
+
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
