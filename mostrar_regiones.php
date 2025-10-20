@@ -1,6 +1,6 @@
 <?php
 // Conexión
-require 'config.php';
+require 'configDB.php';
 
 // Consulta a la tabla regiones
 $sql = "SELECT codigo, nombre FROM regiones";

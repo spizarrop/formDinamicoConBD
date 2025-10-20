@@ -3,7 +3,9 @@
 require 'config.php';
 
 // Crear la base de datos si no existe
-$conexion->query("CREATE DATABASE IF NOT EXISTS $dbname");
+/* $conexion->query("CREATE DATABASE IF NOT EXISTS $dbname"); */
+
+// Seleccionar base de datos
 $conexion->select_db($dbname);
 
 // Crear tabla

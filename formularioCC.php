@@ -1,6 +1,6 @@
 <?php
 // Conexión
-require 'config.php';
+require 'configDB.php';
 require 'cargarDatos.php';
 
 // Acciones
