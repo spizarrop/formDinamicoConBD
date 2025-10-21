@@ -6,7 +6,7 @@ require 'configDB.php';
 /* $conexion->query("CREATE DATABASE IF NOT EXISTS $dbname"); */
 
 // Seleccionar base de datos
-$conexion->select_db($dbname);
+//$conexion->select_db($dbname);
 
 // Crear tabla
 $sql = "CREATE TABLE IF NOT EXISTS regiones (
