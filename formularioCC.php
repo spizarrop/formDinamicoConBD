@@ -1,20 +1,28 @@
 <?php
 // Conexión
 require 'configDB.php';
-require 'cargarDatos.php';
-
-// Acciones
-$acciones = checkboxAcciones();
 
 // Consulta a la tabla regiones
 $sql = "SELECT codigo, nombre FROM regiones";
 $resultado = $conexion->query($sql);
 
-// Creamos un array
+// Creamos un array para las regiones (select)
 $region = [];
 if ($resultado->num_rows > 0) {
   while ($fila = $resultado->fetch_assoc()) {
     $region[$fila['codigo']] = $fila['nombre'];
+  }
+}
+
+// Consulta a la tabla acciones
+$sql = "SELECT id_accion, descripcion FROM acciones";
+$resultado = $conexion->query($sql);
+
+// Creamos un array para las acciones (checkbox)
+$acciones = [];
+if ($resultado->num_rows > 0) {
+  while ($fila = $resultado->fetch_assoc()) {
+    $acciones[$fila['id_accion']] = $fila['descripcion'];
   }
 }
 
