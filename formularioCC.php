@@ -3,14 +3,14 @@
 require 'configDB.php';
 
 // Consulta a la tabla regiones
-$sql = "SELECT codigo, nombre FROM regiones";
+$sql = "SELECT id_region, nombre FROM regiones";
 $resultado = $conexion->query($sql);
 
 // Creamos un array para las regiones (select)
 $region = [];
 if ($resultado->num_rows > 0) {
   while ($fila = $resultado->fetch_assoc()) {
-    $region[$fila['codigo']] = $fila['nombre'];
+    $region[$fila['id_region']] = $fila['nombre'];
   }
 }
 
@@ -44,8 +44,8 @@ if ($resultado->num_rows > 0) {
       <legend>Encuesta sobre el Cambio Climático</legend>
 
       <!-- Input de texto -->
-      <label for="nombre"><strong>Email:</strong></label>
-      <input type="text" name="nombre">
+      <label for="correo"><strong>Email:</strong></label>
+      <input type="text" name="correo">
 
       <!-- Checkboxes -->
       <p><strong>¿Qué acciones realizas para cuidar el medio ambiente?</strong></p>
@@ -82,10 +82,6 @@ if ($resultado->num_rows > 0) {
         }
         ?>
       </select>
-
-      <!-- Subir archivo -->
-      <label for="archivo"><strong>Sube una imagen o documento relacionado:</strong></label>
-      <input type="file" name="archivo">
 
       <!-- Checkbox final -->
       <label>

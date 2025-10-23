@@ -3,22 +3,27 @@
 require 'configDB.php';
 
 // Inserción de datos
-if (isset($_GET['consentimiento']) == "Aceptado") {
-  $sql = "INSERT INTO encuestas (" . $_GET['nombre'] . ", " . $_GET['problema'] . ", " . $_GET['opinion'] . ")";
+if (isset($_GET['consentimiento'])) { 
+  // Insercion de la encuesta
+  $sql = "INSERT INTO encuestas (correo, problema, opinion) VALUES ('" . $_GET['correo'] . "', '" . $_GET['problema'] . "', '" . $_GET['opinion'] . "');";
   $conexion->query($sql);
 
-  $id_encuesta = "SELECT id_encuesta FROM encuestas WHERE ";
-  $id_accion = "";
-  $id_region = "SELECT id_region FROM regiones WHERE region = '" . $_GET['region'] . "'";
+  $resultado = $conexion->query("SELECT id_encuesta FROM encuestas WHERE correo = '" . $_GET['correo'] . "';");
+  $fila = $resultado->fetch_assoc();
+  $id_encuesta = $fila['id_encuesta'];
 
   // Insercion de acciones
-  foreach ($_GET['acciones'] as $id_accion => $accion) {
-     $sql = "INSERT INTO encuesta_accion (" . $id_encuesta . ", " . $id_accion . ")";
-     $conexion->query($sql);
+  foreach ($_GET['acciones'] as $accion) {
+    $id_accion = $accion;
+
+    $sql = "INSERT INTO encuesta_accion VALUES (" . $id_encuesta . ", " . $id_accion . ");";
+    $conexion->query($sql);
   }
 
+  $id_region = $_GET['region'];
+
   // Insercion de region
-  $sql = "INSERT INTO encuesta_region (" . $id_encuesta . ", " . $id_region . ")";
+  $sql = "INSERT INTO encuesta_region VALUES (" . $id_encuesta . ", " . $id_region . ")";
   $conexion->query($sql);
 }
 
@@ -61,10 +66,6 @@ if (isset($_GET['consentimiento']) == "Aceptado") {
 
     <p><strong>Región:</strong>
       <?php echo $_GET['region'] ?? 'No seleccionada'; ?>
-    </p>
-
-    <p><strong>Archivo subido:</strong>
-      <?php echo !empty($_GET['archivo']) ? $_GET['archivo'] : 'Ningun adjunto'; ?>
     </p>
 
     <p><strong>Consentimiento:</strong>
