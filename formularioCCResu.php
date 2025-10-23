@@ -4,11 +4,26 @@ require 'configDB.php';
 
 // Inserción de datos
 if (isset($_GET['consentimiento']) == "Aceptado") {
-  $sql = "INSERT INTO encuesta (" . $_GET['nombre'] . ", " . $_GET['acciones'] . ", " . $_GET['problema'] . ", " . $_GET['opinion'] . ", " . $_GET['region'] . ")";
-  $resultado = $conexion->query($sql);
+  $sql = "INSERT INTO encuestas (" . $_GET['nombre'] . ", " . $_GET['problema'] . ", " . $_GET['opinion'] . ")";
+  $conexion->query($sql);
+
+  $id_encuesta = "SELECT id_encuesta FROM encuestas WHERE ";
+  $id_accion = "";
+  $id_region = "SELECT id_region FROM regiones WHERE region = '" . $_GET['region'] . "'";
+
+  // Insercion de acciones
+  foreach ($_GET['acciones'] as $id_accion => $accion) {
+     $sql = "INSERT INTO encuesta_accion (" . $id_encuesta . ", " . $id_accion . ")";
+     $conexion->query($sql);
+  }
+
+  // Insercion de region
+  $sql = "INSERT INTO encuesta_region (" . $id_encuesta . ", " . $id_region . ")";
+  $conexion->query($sql);
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -49,7 +64,7 @@ if (isset($_GET['consentimiento']) == "Aceptado") {
     </p>
 
     <p><strong>Archivo subido:</strong>
-      <?php echo !empty($_GET['archivo']) ? $_GET['archivo'] : 'No disponible con GET'; ?>
+      <?php echo !empty($_GET['archivo']) ? $_GET['archivo'] : 'Ningun adjunto'; ?>
     </p>
 
     <p><strong>Consentimiento:</strong>

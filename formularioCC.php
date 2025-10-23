@@ -44,7 +44,7 @@ if ($resultado->num_rows > 0) {
       <legend>Encuesta sobre el Cambio Climático</legend>
 
       <!-- Input de texto -->
-      <label for="nombre"><strong>Nombre y apellidos:</strong></label>
+      <label for="nombre"><strong>Email:</strong></label>
       <input type="text" name="nombre">
 
       <!-- Checkboxes -->

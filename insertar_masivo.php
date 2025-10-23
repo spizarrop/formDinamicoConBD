@@ -64,5 +64,34 @@ foreach ($acciones as $accion) {
 
 echo "Inserción masiva de acciones completada correctamente." . "</br>";
 
+// Crear tabla encuesta para formulario
+$sql = "CREATE TABLE IF NOT EXISTS encuestas (
+    id_encuesta TINYINT AUTO_INCREMENT PRIMARY KEY,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    problema VARCHAR(100) NOT NULL,
+    opinion VARCHAR(250)
+)";
+$conexion->query($sql);
+
+// Crear tabla intermedia encuesta_accion
+$sql = "CREATE TABLE IF NOT EXISTS encuesta_accion (
+    id_encuesta TINYINT NOT NULL,
+    id_accion TINYINT NOT NULL,
+    FOREIGN KEY (id_encuesta) REFERENCES encuestas (id_encuesta),
+    FOREIGN KEY (id_accion) REFERENCES acciones (id_accion)
+)";
+$conexion->query($sql);
+
+// Crear tabla intermedia encuesta_region
+$sql = "CREATE TABLE IF NOT EXISTS encuesta_region (
+    id_encuesta TINYINT NOT NULL,
+    id_region TINYINT NOT NULL,
+    FOREIGN KEY (id_encuesta) REFERENCES encuestas (id_encuesta),
+    FOREIGN KEY (id_region) REFERENCES regiones (id_region)
+)";
+$conexion->query($sql);
+
+echo "Creación de tablas complementarias hecha correctamente." . "</br>";
+
 $conexion->close();
 ?>
