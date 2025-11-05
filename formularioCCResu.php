@@ -2,29 +2,70 @@
 // Conexión
 require 'configDB.php';
 
-// Inserción de datos
-if (isset($_GET['consentimiento'])) { 
-  // Insercion de la encuesta
-  $sql = "INSERT INTO encuestas (correo, problema, opinion) VALUES ('" . $_GET['correo'] . "', '" . $_GET['problema'] . "', '" . $_GET['opinion'] . "');";
-  $conexion->query($sql);
+// Activar excepciones de mysqli (driver)
+$controlador = new mysqli_driver();
+$controlador->report_mode = MYSQLI_REPORT_ALL | MYSQLI_REPORT_STRICT;
 
-  $resultado = $conexion->query("SELECT id_encuesta FROM encuestas WHERE correo = '" . $_GET['correo'] . "';");
-  $fila = $resultado->fetch_assoc();
-  $id_encuesta = $fila['id_encuesta'];
+try {
 
-  // Insercion de acciones
-  foreach ($_GET['acciones'] as $accion) {
-    $id_accion = $accion;
+  // Inicio de una stransaccion por si ocurriese algun fallo
+  $conexion->begin_transaction();
 
-    $sql = "INSERT INTO encuesta_accion VALUES (" . $id_encuesta . ", " . $id_accion . ");";
+  // Inserción de datos
+  if (isset($_GET['consentimiento'])) {
+    // Insercion de la encuesta
+    $sql = "INSERT INTO encuestas (correo, problema, opinion) VALUES ('" . $_GET['correo'] . "', '" . $_GET['problema'] . "', '" . $_GET['opinion'] . "');";
+    $conexion->query($sql);
+
+    $resultado = $conexion->query("SELECT id_encuesta FROM encuestas WHERE correo = '" . $_GET['correo'] . "';");
+    $fila = $resultado->fetch_assoc();
+    $id_encuesta = $fila['id_encuesta'];
+
+    // Insercion de acciones
+    foreach ($_GET['acciones'] as $accion) {
+      $id_accion = $accion;
+
+      $sql = "INSERT INTO encuesta_accion VALUES (" . $id_encuesta . ", " . $id_accion . ");";
+      $conexion->query($sql);
+    }
+
+    $id_region = $_GET['region'];
+
+    // Insercion de region
+    $sql = "INSERT INTO encuesta_region VALUES (" . $id_encuesta . ", " . $id_region . ")";
     $conexion->query($sql);
   }
 
-  $id_region = $_GET['region'];
+  // Guardamos con un commit si hemos llegado a este punto sin errores
+  $conexion->commit();
 
-  // Insercion de region
-  $sql = "INSERT INTO encuesta_region VALUES (" . $id_encuesta . ", " . $id_region . ")";
-  $conexion->query($sql);
+} catch (mysqli_sql_exception $e) {
+
+  // Si ha saltado cualquier error y no hemos llegado al commit hacemos un rollback
+  $conexion->rollback();
+  
+  switch ($e->getCode()) {
+    case 1062:
+      // Error 1062 → valor duplicado
+      echo "Ya existe una encuesta registrada con ese correo.";
+      break;
+    case 1452:
+      // Error 1452 → violación de clave foránea
+      echo "La acción o región seleccionada no existe en la base de datos.";
+      break;
+    case 1048:
+      // Error 1048 → columna no puede ser NULL
+      echo "Falta algún campo obligatorio en el formulario.";
+      break;
+    case 1054:
+      // Error 1054 → columna desconocida
+      echo "Se está intentando usar un campo que no existe.";
+      break;
+    default:
+      // Mensaje genérico por si aparece otro error
+      echo "Error en la base de datos (" . $e->getCode() . "): " . $e->getMessage();
+      break;
+  }
 }
 
 ?>
@@ -42,7 +83,7 @@ if (isset($_GET['consentimiento'])) {
 <body>
   <h1>Resultados del Formulario</h1>
   <div class="resultado">
-    <p><strong>Nombre:</strong> <?php echo $_GET['nombre'] ?? 'No enviado'; ?></p>
+    <p><strong>Correo:</strong> <?php echo $_GET['correo'] ?? 'No enviado'; ?></p>
 
     <p><strong>Acciones realizadas:</strong><br>
       <?php
